@@ -1,28 +1,39 @@
 {
-  "name": "with-docker",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "clean": "turbo run clean",
-    "dev": "turbo run dev",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint",
-    "test": "turbo run test"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "@repo/eslint-config": "*",
-    "prettier": "^3.2.5",
-    "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=7.0.0"
-  },
-  "packageManager": "npm@10.5.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+   "name": "soccer-service",
+   "version": "0.0.0",
+   "private": true,
+   "scripts": {
+      "build": "turbo run build",
+      "clean": "turbo run clean",
+      "dev": "turbo run dev",
+      "dev:backend": "dotenv -e .env -- turbo run dev --filter=api",
+      "dev:frontend": "turbo run dev --filter=web",
+      "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+      "lint": "turbo run lint",
+      "test": "turbo run test",
+      "prisma:studio": "dotenv -e .env -- npx -w database prisma studio",
+      "migrate:build": "dotenv -e .env -- turbo run build --filter=@repo/db",
+      "migrate:reset": "dotenv -e .env -- turbo run migrate:reset --filter=@repo/db",
+      "migrate:reset-no-seed": "dotenv -e .env.dev -- turbo run migrate:reset-no-seed --filter=@repo/db",
+      "migrate:dev": "dotenv -e .env -- turbo run migrate:dev --filter=@repo/db",
+      "migrate:deploy": "dotenv -e .env -- turbo run migrate:deploy --filter=@repo/db",
+      "db:generate": "dotenv -e .env -- turbo run db:generate --filter=@repo/db"
+   },
+   "dependencies": {
+      "dotenv-cli": "^7.4.2"
+   },
+   "devDependencies": {
+      "@repo/eslint-config": "*",
+      "prettier": "^3.2.5",
+      "turbo": "latest"
+   },
+   "engines": {
+      "node": ">=14.0.0",
+      "npm": ">=7.0.0"
+   },
+   "packageManager": "npm@10.5.0",
+   "workspaces": [
+      "apps/*",
+      "packages/*"
+   ]
 }

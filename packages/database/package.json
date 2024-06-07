@@ -1,0 +1,26 @@
+{
+   "name": "@repo/db",
+   "version": "0.0.0",
+   "description": "prisma client and migrations",
+   "main": "./dist/index.js",
+   "types": "./dist/index.d.ts",
+   "files": [
+      "dist/**/*"
+   ],
+   "dependencies": {
+      "@prisma/client": "^5.5.2"
+   },
+   "scripts": {
+      "pull": "npm run db:generate && prisma db pull --schema=src/prisma/schema.prisma",
+      "build": "npm run db:generate",
+      "db:generate": "prisma generate --schema=src/prisma/schema.prisma",
+      "db:push": "prisma db push --skip-generate",
+      "migrate:dev": "prisma migrate dev --schema=src/prisma/schema.prisma",
+      "migrate:deploy": "prisma migrate deploy --schema=src/prisma/schema.prisma"
+   },
+   "devDependencies": {
+      "prisma": "^5.5.2",
+      "ts-node": "^10.9.1",
+      "typescript": "^5.2.2"
+   }
+}
