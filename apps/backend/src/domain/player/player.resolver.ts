@@ -19,6 +19,10 @@ export class PlayerResolver {
 
    @Mutation(() => Player)
    async createPlayer(@Args() { name, position, team }: CreatePlayerDTO) {
+      console.log(name);
+      console.log(position);
+      console.log(team);
+
       return await this.repository.createPlayer({
          name,
          position,
