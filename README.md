@@ -1,69 +1,143 @@
-# Soccer service
+# Soccer service - EN_US
 
-This is an official Docker starter Turborepo.
+Collaborative repository to create a system to manage Monday soccer statistics
 
-## Using this example
-
-Run the following command:
+## Installation and execution
 
 ```sh
-npx create-turbo@latest -e with-docker
+npm i
+npm run build
+npm run dev
+# The above command runs the frontend and backend simultaneously
 ```
 
-## What's inside?
+To run only the backend
 
-This Turborepo includes the following:
-
-### Apps and Packages
-
-- `web`: a [Next.js](https://nextjs.org/) app
-- `api`: an [Express](https://expressjs.com/) server
-- `@repo/ui`: a React component library
-- `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
-- `@repo/eslint-config`: ESLint presets
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
-- `@repo/jest-presets`: Jest configurations
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Docker
-
-This repo is configured to be built with Docker, and Docker compose. To build all apps in this repo:
-
+```sh
+npm i
+npm run build
+npm run dev:backend
+# The above command runs the frontend and backend simultaneously
 ```
-# Create a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-docker network create app_network
+To run only the frontend
 
-# Build prod using new BuildKit engine
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml build
-
-# Start prod in detached mode
-docker-compose -f docker-compose.yml up -d
+```sh
+npm i
+npm run build
+npm run dev:frontend
+# The above command runs the frontend and backend simultaneously
 ```
 
-Open http://localhost:3000.
+## How to use
 
-To shutdown all running containers:
+First, you need to create a file called .env in the root of the project and add the following variable
 
+```env
+DATABASE_URL=<postgres url>
 ```
-# Stop all running containers
-docker kill $(docker ps -q) && docker rm $(docker ps -a -q)
+
+After that, you will be able to run both projects simultaneously and interact between them
+
+## Needed Tasks
+
+### Backend
+- [ ] Create a function to save player statistics and return the overall
+- [ ] Create a domain to create a match and add players
+- [ ] Create a function to add statistics to the match
+- [ ] Add unit tests
+- [ ] Adicionar e2e tests
+
+### Frontend
+
+- [ ] Improve the page design
+- [ ] Make the mutation automatically update the player list after running
+- [ ] Create screens for each domain above
+
+
+### Projeto em geral
+
+- [ ] Dockerize
+- [ ] Create CI/CD
+- [ ] Deploy on AWS
+
+## How to colaborate
+
+The main branch is protected, to collaborate you must clone the repository, open a new branch and request a code review, once merged you will be added as a collaborator below
+
+### Collaborators
+
+- Ismael Pereira
+
+# Soccer service - PT_BR
+
+Repositório colaborativo para criar o sistema para gerenciar as estatíticas do futebol de segunda-feira
+
+## Instalação e execução
+
+```sh
+npm i
+npm run build
+npm run dev
+# Esse comando acima executa o frontend e o backend ao mesmo tempo
 ```
 
-### Remote Caching
+Para executar apenas o backend
 
-This example includes optional remote caching. In the Dockerfiles of the apps, uncomment the build arguments for `TURBO_TEAM` and `TURBO_TOKEN`. Then, pass these build arguments to your Docker build.
+```sh
+npm i
+npm run build
+npm run dev:backend
+# Esse comando acima executa o frontend e o backend ao mesmo tempo
+```
 
-You can test this behavior using a command like:
+Para executar apenas o backend
 
-`docker build -f apps/web/Dockerfile . --build-arg TURBO_TEAM=“your-team-name” --build-arg TURBO_TOKEN=“your-token“ --no-cache`
+```sh
+npm i
+npm run build
+npm run dev:frontend
+# Esse comando acima executa o frontend e o backend ao mesmo tempo
+```
 
-### Utilities
+## Como utilizar
 
-This Turborepo has some additional tools already setup for you:
+Primeiramente você deve criar uma arquivo chamado `.env` na root do projeto e adicionar a seguinte variável
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
+```env
+DATABASE_URL=<postgres url>
+```
+
+E após isso você será capaz de executar ambos os projetos ao mesmo tempo e interagir entre eles
+
+## Tarefas necessárias
+
+### Backend
+- [ ] Criar função para salvar estatisticas de jogador e retornar o quoeficiente
+- [ ] Criar domínio para criar partida e adicionar
+- [ ] Criar função de adicionar estatisticas na partida
+- [ ] Adicionar testes unitários
+- [ ] Adicionar testes e2e
+
+### Frontend
+
+- [ ] Melhorar o design da página
+- [ ] Fazer a mutation após rodar atualizar automaticamente a lista de jogadores
+- [ ] Criar telas pra cada domínio acima
+
+
+### Projeto em geral
+
+- [ ] Dockerizar
+- [ ] Criar CI/CD
+- [ ] Deploy AWS
+
+
+## Como colaborar
+
+A branch main está protegida, para coloborar você deve clonar o repositório, abrir uma branch nova e pedir code review, após mergeado você será inserido como um colaborador abaixo
+
+### Colaboradores
+
+- Ismael Pereira
+
+
