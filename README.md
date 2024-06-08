@@ -42,7 +42,7 @@ After that, you will be able to run both projects simultaneously and interact be
 
 ### Backend
 - [ ] Create a function to save player statistics and return the overall
-- [ ] Create a domain to create a match and add players
+- [X] Create a domain to create a match and add players
 - [ ] Create a function to add statistics to the match
 - [ ] Add unit tests
 - [ ] Adicionar e2e tests
