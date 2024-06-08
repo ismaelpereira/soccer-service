@@ -4,11 +4,12 @@ import path from "path";
 import { buildSchema } from "type-graphql";
 import { logger } from "@repo/logger";
 import { PlayerResolver } from "./domain/player";
+import { MatchResolver } from "./domain/match";
 import { container } from "./di/container";
 
 async function main() {
    const schema = await buildSchema({
-      resolvers: [PlayerResolver],
+      resolvers: [PlayerResolver, MatchResolver],
       emitSchemaFile: path.resolve(__dirname, "schema.gql"),
       container: container,
    });

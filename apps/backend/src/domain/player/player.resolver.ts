@@ -1,9 +1,8 @@
 import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
 import { Player } from "./entity/player.entity";
-import type { positions } from "../../utils/types/position.type";
 import { CreatePlayerDTO } from "./dto/createPlayer.dto";
 import { injectable, inject } from "inversify";
-import { PlayerRepository } from "./entity/player.repository";
+import { PlayerRepository } from "./player.repository";
 
 @injectable()
 @Resolver((of) => Player)

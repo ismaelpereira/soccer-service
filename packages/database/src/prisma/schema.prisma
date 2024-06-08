@@ -8,7 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum Position {
   ATK
   DEF
@@ -17,12 +16,13 @@ enum Position {
 }
 
 model player {
-  id           String         @id @default(uuid())
-  name         String         @db.VarChar(365)
-  team         String?         @db.VarChar(3)
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  position     Position
-  player_stats player_stats[]
+  id            String          @id @default(uuid())
+  name          String          @db.VarChar(365)
+  team          String?         @db.VarChar(3)
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  position      Position
+  player_stats  player_stats[]
+  match_players match_players[]
 }
 
 model player_stats {
@@ -41,8 +41,9 @@ model player_stats {
 }
 
 model match {
-  id         String   @id @default(uuid())
-  created_at DateTime @default(now()) @db.Timestamp(6)
+  id            String          @id @default(uuid())
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  match_players match_players[]
 }
 
 model match_players {
@@ -59,4 +60,6 @@ model match_players {
   goals_suffered               Int
   defenses                     Int
   created_at                   DateTime @default(now()) @db.Timestamp(6)
+  match                        match    @relation(fields: [match_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_match_player_match")
+  player                       player   @relation(fields: [player_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_match_player_player")
 }

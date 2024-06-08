@@ -1,6 +1,6 @@
 import { PrismaClient } from "@repo/db";
-import { CreatePlayerDTO } from "../dto/createPlayer.dto";
-import { Player } from "./player.entity";
+import { CreatePlayerDTO } from "./dto/createPlayer.dto";
+import { Player } from "./entity/player.entity";
 import { inject, injectable } from "inversify";
 
 @injectable()
@@ -49,4 +49,5 @@ export class PlayerRepository {
 
       return player;
    }
+
 }

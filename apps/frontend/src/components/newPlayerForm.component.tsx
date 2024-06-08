@@ -15,7 +15,7 @@ export function NewPlayerForm() {
    const [name, setName] = useState("");
    const [position, setPosition] = useState("ATK");
    const [team, setTeam] = useState("");
-   const [createPlayer, { data, loading, error }] = useMutation(CREATE_PLAYER);
+   const [createPlayer, { data }] = useMutation(CREATE_PLAYER);
 
    async function handleCreatePlayer(event: FormEvent) {
       event.preventDefault();
@@ -31,9 +31,6 @@ export function NewPlayerForm() {
             team: team ?? null,
          },
          awaitRefetchQueries: true,
-         onCompleted(data, clientOptions) {
-            return data;
-         },
       });
 
       console.log(data);
