@@ -3,7 +3,36 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
+type Match {
+  created_at: DateTimeISO!
+  id: ID!
+}
+
+type MatchPlayers {
+  assists: Float!
+  createdAt: DateTimeISO!
+  createdPlays: Float!
+  defenses: Float!
+  gamesWithoutSufferedGoals: Float!
+  goals: Float!
+  goalsSuffered: Float!
+  id: ID!
+  matchId: String!
+  ownGoal: Float!
+  participations: Float!
+  playerId: String!
+  tackles: Float!
+}
+
 type Mutation {
+  addPlayerMatch(matchId: String!, playerId: String!): MatchPlayers!
+  addPlayerStatistic(assists: Float!, createdPlays: Float!, defenses: Float!, gamesWithoutSufferedGoals: Float!, goals: Float!, goalsSuffered: Float!, matchId: String!, ownGoal: Float!, participations: Float!, playerId: String!, tackles: Float!): MatchPlayers!
+  createMatch: Match!
   createPlayer(name: String!, position: String!, team: String): Player!
 }
 
@@ -15,6 +44,8 @@ type Player {
 }
 
 type Query {
+  match(date: DateTimeISO!): [MatchPlayers!]!
   player(id: String!): Player!
+  playerMatchStatus(date: DateTimeISO!, playerId: String!): MatchPlayers!
   players: [Player!]!
 }

@@ -4,6 +4,7 @@ import { Arg, Args, Mutation, Query } from "type-graphql";
 import { MatchPlayers } from "./entity/matchStatus.entity";
 import { MatchRepository } from "./match.repository";
 import { AddMatchPlayerDTO } from "./dto/createMatchPlayer.dto";
+import { StatusDTO } from "./dto/status.dto";
 
 @injectable()
 export class MatchResolver {
@@ -33,4 +34,13 @@ export class MatchResolver {
    ) {
       return await this.repository.getMatchPlayerStatus(date, playerId);
    }
+
+   @Mutation(() => MatchPlayers)
+   async addPlayerStatistic(
+      @Args() { matchId, playerId }: AddMatchPlayerDTO,
+      @Args() stats: StatusDTO
+   ) {
+      return await this.repository.addMatchStatus(matchId, playerId, stats);
+   }
 }
+  q

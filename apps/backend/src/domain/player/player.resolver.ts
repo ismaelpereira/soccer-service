@@ -3,9 +3,10 @@ import { Player } from "./entity/player.entity";
 import { CreatePlayerDTO } from "./dto/createPlayer.dto";
 import { injectable, inject } from "inversify";
 import { PlayerRepository } from "./player.repository";
+import { FullPlayerStats } from "./entity/fullPlayerData.entity";
 
 @injectable()
-@Resolver((of) => Player)
+@Resolver(() => Player)
 export class PlayerResolver {
    constructor(
       @inject("PlayerRepository") private readonly repository: PlayerRepository
@@ -32,5 +33,10 @@ export class PlayerResolver {
    @Query(() => Player)
    async player(@Arg("id") id: string) {
       return await this.repository.findOnePlayer(id);
+   }
+
+   @Query(() => FullPlayerStats)
+   async fullPlayer(@Arg("id") id: string) {
+      return await this.repository.getPlayerFullStats(id);
    }
 }
