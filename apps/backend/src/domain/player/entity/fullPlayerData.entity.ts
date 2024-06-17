@@ -1,9 +1,9 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { Player } from "./player.entity";
+
 import { positions } from "../../../utils/types/position.type";
 
 @ObjectType()
-export class FullPlayerStats extends Player {
+export class Player {
    @Field((_type) => ID)
    id?: string;
 
@@ -48,4 +48,7 @@ export class FullPlayerStats extends Player {
 
    @Field()
    overall!: number;
+
+   @Field()
+   effectivity!: number;
 }

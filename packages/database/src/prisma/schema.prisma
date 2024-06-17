@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../../dist"
+  previewFeatures = ["fieldReference"]
 }
 
 datasource db {
@@ -23,6 +24,7 @@ model player {
   position      Position
   player_stats  player_stats[]
   match_players match_players[]
+  weekly_team   weekly_team[]
 }
 
 model player_stats {
@@ -44,6 +46,7 @@ model match {
   id            String          @id @default(uuid())
   created_at    DateTime        @default(now()) @db.Timestamp(6)
   match_players match_players[]
+  weekly_team   weekly_team[]
 }
 
 model match_players {
@@ -62,4 +65,29 @@ model match_players {
   created_at                   DateTime @default(now()) @db.Timestamp(6)
   match                        match    @relation(fields: [match_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_match_player_match")
   player                       player   @relation(fields: [player_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_match_player_player")
+}
+
+enum Team {
+  Team1
+  Team2
+  Team3
+  Team4
+}
+
+model weekly_team {
+  id           String         @id @default(uuid())
+  match_id     String
+  player_id    String
+  team         Team
+  player       player         @relation(fields: [player_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_player")
+  match        match          @relation(fields: [match_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_match")
+  team_results team_results[]
+}
+
+model team_results {
+  id            String      @id @default(uuid())
+  team_id       String
+  goalsMade     Int
+  goalsSuffered Int
+  weekly_team   weekly_team @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_results")
 }

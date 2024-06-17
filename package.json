@@ -17,7 +17,8 @@
       "migrate:reset-no-seed": "dotenv -e .env.dev -- turbo run migrate:reset-no-seed --filter=@repo/db",
       "migrate:dev": "dotenv -e .env -- turbo run migrate:dev --filter=@repo/db",
       "migrate:deploy": "dotenv -e .env -- turbo run migrate:deploy --filter=@repo/db",
-      "db:generate": "dotenv -e .env -- turbo run db:generate --filter=@repo/db"
+      "db:generate": "dotenv -e .env -- turbo run db:generate --filter=@repo/db",
+      "prisma:format": "prisma format --schema=./packages/database/src/prisma/schema.prisma"
    },
    "dependencies": {
       "dotenv-cli": "^7.4.2"

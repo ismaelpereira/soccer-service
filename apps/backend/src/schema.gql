@@ -37,9 +37,20 @@ type Mutation {
 }
 
 type Player {
+  assists: Float!
+  createdPlays: Float!
+  defenses: Float!
+  gamesWithoutSufferedGoals: Float!
+  goals: Float!
+  goalsSuffered: Float!
   id: ID!
   name: String!
+  overall: Float!
+  ownGoal: Float!
+  participations: Float!
   position: String!
+  presence: Float!
+  tackles: Float!
   team: String
 }
 

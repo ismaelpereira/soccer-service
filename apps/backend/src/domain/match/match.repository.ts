@@ -4,13 +4,19 @@ import { MatchPlayers } from "./entity/matchStatus.entity";
 import { Match } from "./entity/match.entity";
 import { IStats } from "../../utils/types/stats.types";
 import { logger } from "@repo/logger";
+import {
+   calculateGoalkeeperOverall,
+   calculatePlayerOverall,
+   calculateEffectivy,
+} from "../../utils/helpers/calculateOverall";
+import { calculatePresencePercentage } from "../../utils/helpers/calculatePresence";
 
 @injectable()
 export class MatchRepository {
    constructor(@inject("PrismaClient") private readonly prisma: PrismaClient) {}
 
    public async getMatch(date: Date): Promise<Partial<MatchPlayers[]>> {
-      const match = await this.prisma.match_players.findMany({
+      const players = await this.prisma.match_players.findMany({
          include: {
             match: true,
             player: true,
@@ -22,30 +28,131 @@ export class MatchRepository {
          },
       });
 
-      if (!match) {
+      if (!players) {
          logger.error(`Match on ${date.toISOString()} not found`);
          throw new Error("match not found");
       }
 
-      logger.info(`Match found`);
-      return match.map((player) => ({
-         assists: player.assists,
-         createdPlays: player.created_plays,
-         defenses: player.defenses,
-         gamesWithoutSufferedGoals: player.games_without_suffered_goals,
-         goals: player.goals,
-         ownGoal: player.own_goal,
-         goalsSuffered: player.goals_suffered,
-         participations: player.participations,
-         tackles: player.tackles,
-         createdAt: player.match.created_at,
-         playerId: player.player_id,
-         matchId: player.match_id,
-      }));
+      const matchPlayers: MatchPlayers[] = [];
+
+      for (let i = 0; i < players.length; i++) {
+         const player = players[i];
+
+         const matchesAppeared = await this.prisma.match_players.count({
+            where: {
+               player_id: player.id,
+            },
+         });
+
+         const totalMatch = await this.prisma.match.count({
+            where: {
+               created_at: date,
+            },
+         });
+
+         const averages = await this.prisma.match_players.aggregate({
+            _avg: {
+               assists: true,
+               created_plays: true,
+               defenses: true,
+               games_without_suffered_goals: true,
+               goals: true,
+               goals_suffered: true,
+               own_goal: true,
+               participations: true,
+               tackles: true,
+            },
+            where: {
+               match: {
+                  created_at: date,
+               },
+            },
+         });
+
+         const victories = await this.prisma.team_results.findMany({
+            where: {
+               weekly_team: {
+                  player_id: player.id,
+                  match: {
+                     created_at: date,
+                  },
+               },
+               goalsMade: {
+                  gt: this.prisma.team_results.fields.goalsSuffered,
+               },
+            },
+         });
+
+         const teamGoals = await this.prisma.team_results.aggregate({
+            _sum: {
+               goalsMade: true,
+            },
+            where: {
+               weekly_team: {
+                  player_id: player.id,
+                  match: {
+                     created_at: date,
+                  },
+               },
+            },
+         });
+
+         matchPlayers.push({
+            matchId: player.match_id,
+            createdAt: player.created_at,
+            playerId: player.player.id,
+            assists: player.assists,
+            createdPlays: player.created_plays,
+            defenses: player.defenses,
+            gamesWithoutSufferedGoals: player.games_without_suffered_goals,
+            goals: player.goals,
+            goalsSuffered: player.goals_suffered,
+            name: player.player.name,
+            ownGoal: player.own_goal,
+            participations: player.participations,
+            position: player.player.position,
+            tackles: player.tackles,
+            team: player.player.team ?? null,
+            id: player.player.id,
+            presence: calculatePresencePercentage(matchesAppeared, totalMatch),
+            effectivity: calculateEffectivy(
+               player.goals,
+               player.assists,
+               teamGoals._sum.goalsMade ?? 1
+            ),
+            overall:
+               player.player.position === "GK"
+                  ? calculateGoalkeeperOverall({
+                       defenses: player.defenses,
+                       gamesWithoutSufferedGoals:
+                          player.games_without_suffered_goals,
+                       sufferedGoals: player.goals_suffered,
+                       victories: victories.length,
+                    })
+                  : calculatePlayerOverall({
+                       assists: player.assists,
+                       averageAssists: averages._avg.assists ?? 1,
+                       averageCreatedPlays: averages._avg.created_plays ?? 1,
+                       averageGoals: averages._avg.created_plays ?? 1,
+                       averageTackles: averages._avg.tackles ?? 1,
+                       createdPlays: player.created_plays,
+                       gamesWithoutSufferedGoals:
+                          player.games_without_suffered_goals,
+                       goals: player.goals,
+                       ownGoal: player.own_goal,
+                       tackles: player.tackles,
+                       victories: victories.length,
+                       teamGoals: teamGoals._sum.goalsMade ?? 1,
+                    }),
+         });
+      }
    }
 
-   public async getMatchPlayerStatus(date: Date, playerId: string) {
-      const match = await this.prisma.match_players.findMany({
+   public async getMatchPlayerStatus(
+      date: Date,
+      playerId: string
+   ): Promise<Partial<MatchPlayers>> {
+      const player = await this.prisma.match_players.findFirst({
          include: {
             match: true,
             player: true,
@@ -58,28 +165,121 @@ export class MatchRepository {
          },
       });
 
-      if (!match) {
+      if (!player) {
          logger.error(
             `Player ${playerId} not found on game on ${date.toISOString()}`
          );
          throw new Error("player not found");
       }
+      const matchesAppeared = await this.prisma.match_players.count({
+         where: {
+            player_id: player.id,
+         },
+      });
+
+      const totalMatch = await this.prisma.match.count({
+         where: {
+            created_at: date,
+         },
+      });
+
+      const averages = await this.prisma.match_players.aggregate({
+         _avg: {
+            assists: true,
+            created_plays: true,
+            defenses: true,
+            games_without_suffered_goals: true,
+            goals: true,
+            goals_suffered: true,
+            own_goal: true,
+            participations: true,
+            tackles: true,
+         },
+         where: {
+            match: {
+               created_at: date,
+            },
+         },
+      });
+
+      const victories = await this.prisma.team_results.findMany({
+         where: {
+            weekly_team: {
+               player_id: player.id,
+               match: {
+                  created_at: date,
+               },
+            },
+            goalsMade: {
+               gt: this.prisma.team_results.fields.goalsSuffered,
+            },
+         },
+      });
+
+      const teamGoals = await this.prisma.team_results.aggregate({
+         _sum: {
+            goalsMade: true,
+         },
+         where: {
+            weekly_team: {
+               player_id: player.id,
+               match: {
+                  created_at: date,
+               },
+            },
+         },
+      });
 
       logger.info(`Match player found`);
-      return match.map((player) => ({
+
+      return {
+         matchId: player.match_id,
+         createdAt: player.created_at,
+         playerId: player.player.id,
          assists: player.assists,
-         created_plays: player.created_plays,
+         createdPlays: player.created_plays,
          defenses: player.defenses,
-         games_without_suffered_goals: player.games_without_suffered_goals,
+         gamesWithoutSufferedGoals: player.games_without_suffered_goals,
          goals: player.goals,
-         own_goal: player.own_goal,
-         goals_suffered: player.goals_suffered,
+         goalsSuffered: player.goals_suffered,
+         name: player.player.name,
+         ownGoal: player.own_goal,
          participations: player.participations,
+         position: player.player.position,
          tackles: player.tackles,
-         created_at: player.match.created_at,
-         player_id: player.player_id,
-         match_id: player.match_id,
-      }));
+         team: player.player.team ?? null,
+         id: player.player.id,
+         presence: calculatePresencePercentage(matchesAppeared, totalMatch),
+         effectivity: calculateEffectivy(
+            player.goals,
+            player.assists,
+            teamGoals._sum.goalsMade ?? 1
+         ),
+         overall:
+            player.player.position === "GK"
+               ? calculateGoalkeeperOverall({
+                    defenses: player.defenses,
+                    gamesWithoutSufferedGoals:
+                       player.games_without_suffered_goals,
+                    sufferedGoals: player.goals_suffered,
+                    victories: victories.length,
+                 })
+               : calculatePlayerOverall({
+                    assists: player.assists,
+                    averageAssists: averages._avg.assists ?? 1,
+                    averageCreatedPlays: averages._avg.created_plays ?? 1,
+                    averageGoals: averages._avg.created_plays ?? 1,
+                    averageTackles: averages._avg.tackles ?? 1,
+                    createdPlays: player.created_plays,
+                    gamesWithoutSufferedGoals:
+                       player.games_without_suffered_goals,
+                    goals: player.goals,
+                    ownGoal: player.own_goal,
+                    tackles: player.tackles,
+                    victories: victories.length,
+                    teamGoals: teamGoals._sum.goalsMade ?? 1,
+                 }),
+      };
    }
 
    public async createMatch(): Promise<Match> {

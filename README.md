@@ -19,6 +19,7 @@ npm run build
 npm run dev:backend
 # The above command runs the frontend and backend simultaneously
 ```
+
 To run only the frontend
 
 ```sh
@@ -41,27 +42,29 @@ After that, you will be able to run both projects simultaneously and interact be
 ## Needed Tasks
 
 ### Backend
-- [ ] Create a table to save teams
-- [ ] Create a function to divide teams equally
-- [ ] Create a route to return match math data and teams data
-- [X] Create a function to save player statistics and return the overall
-- [X] Create a domain to create a match and add players
-- [X] Create a function to add statistics to the match
-- [ ] Add unit tests
-- [ ] Adicionar e2e tests
+
+-  [x] Create a table to save teams
+-  [ ] Create a mutation to divide teams equally
+-  [ ] Create a mutation to save team results
+-  [ ] Calculate overall and presence for weekly match
+-  [ ] Calculate overall and presence for season
+-  [x] Create a function to save player statistics and return the overall
+-  [x] Create a domain to create a match and add players
+-  [x] Create a function to add statistics to the match
+-  [ ] Add unit tests
+-  [ ] Adicionar e2e tests
 
 ### Frontend
 
-- [ ] Improve the page design
-- [ ] Make the mutation automatically update the player list after running
-- [ ] Create screens for each domain above
-
+-  [ ] Improve the page design
+-  [ ] Make the mutation automatically update the player list after running
+-  [ ] Create screens for each domain above
 
 ### Projeto em geral
 
-- [ ] Dockerize
-- [ ] Create CI/CD
-- [ ] Deploy on AWS
+-  [ ] Dockerize
+-  [ ] Create CI/CD
+-  [ ] Deploy on AWS
 
 ## How to colaborate
 
@@ -69,7 +72,7 @@ The main branch is protected, to collaborate you must clone the repository, open
 
 ### Collaborators
 
-- Ismael Pereira
+-  Ismael Pereira
 
 # Soccer service - PT_BR
 
@@ -115,25 +118,24 @@ E após isso você será capaz de executar ambos os projetos ao mesmo tempo e in
 ## Tarefas necessárias
 
 ### Backend
-- [ ] Criar função para salvar estatisticas de jogador e retornar o quoeficiente
-- [ ] Criar domínio para criar partida e adicionar
-- [ ] Criar função de adicionar estatisticas na partida
-- [ ] Adicionar testes unitários
-- [ ] Adicionar testes e2e
+
+-  [ ] Criar função para salvar estatisticas de jogador e retornar o quoeficiente
+-  [ ] Criar domínio para criar partida e adicionar
+-  [ ] Criar função de adicionar estatisticas na partida
+-  [ ] Adicionar testes unitários
+-  [ ] Adicionar testes e2e
 
 ### Frontend
 
-- [ ] Melhorar o design da página
-- [ ] Fazer a mutation após rodar atualizar automaticamente a lista de jogadores
-- [ ] Criar telas pra cada domínio acima
-
+-  [ ] Melhorar o design da página
+-  [ ] Fazer a mutation após rodar atualizar automaticamente a lista de jogadores
+-  [ ] Criar telas pra cada domínio acima
 
 ### Projeto em geral
 
-- [ ] Dockerizar
-- [ ] Criar CI/CD
-- [ ] Deploy AWS
-
+-  [ ] Dockerizar
+-  [ ] Criar CI/CD
+-  [ ] Deploy AWS
 
 ## Como colaborar
 
@@ -141,6 +143,4 @@ A branch main está protegida, para coloborar você deve clonar o repositório, 
 
 ### Colaboradores
 
-- Ismael Pereira
-
-
+-  Ismael Pereira

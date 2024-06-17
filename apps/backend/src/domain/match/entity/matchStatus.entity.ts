@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from "type-graphql";
+import { Player } from "../../player/entity/fullPlayerData.entity";
 
 @ObjectType()
 export class MatchPlayers {
@@ -40,4 +41,24 @@ export class MatchPlayers {
 
    @Field()
    createdAt!: Date;
+
+   @Field()
+   overall!: number;
+
+   @Field()
+   name!: string;
+
+   @Field()
+   team!: string | null;
+
+   @Field()
+   position!: string;
+
+   @Field()
+   presence!: number;
+
+   @Field()
+   effectivity!: number;
+
+  
 }

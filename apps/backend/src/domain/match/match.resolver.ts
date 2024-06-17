@@ -17,6 +17,14 @@ export class MatchResolver {
       return this.repository.getMatch(date);
    }
 
+   @Query(() => MatchPlayers)
+   async playerMatchStatus(
+      @Arg("date") date: Date,
+      @Arg("playerId") playerId: string
+   ) {
+      return await this.repository.getMatchPlayerStatus(date, playerId);
+   }
+
    @Mutation(() => Match)
    async createMatch() {
       return await this.repository.createMatch();
@@ -27,14 +35,6 @@ export class MatchResolver {
       return await this.repository.addMatchPlayer(matchId, playerId);
    }
 
-   @Query(() => MatchPlayers)
-   async playerMatchStatus(
-      @Arg("date") date: Date,
-      @Arg("playerId") playerId: string
-   ) {
-      return await this.repository.getMatchPlayerStatus(date, playerId);
-   }
-
    @Mutation(() => MatchPlayers)
    async addPlayerStatistic(
       @Args() { matchId, playerId }: AddMatchPlayerDTO,
@@ -43,4 +43,3 @@ export class MatchResolver {
       return await this.repository.addMatchStatus(matchId, playerId, stats);
    }
 }
-  q

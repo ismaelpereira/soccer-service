@@ -1,9 +1,8 @@
 import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
-import { Player } from "./entity/player.entity";
 import { CreatePlayerDTO } from "./dto/createPlayer.dto";
 import { injectable, inject } from "inversify";
 import { PlayerRepository } from "./player.repository";
-import { FullPlayerStats } from "./entity/fullPlayerData.entity";
+import { Player } from "./entity/fullPlayerData.entity";
 
 @injectable()
 @Resolver(() => Player)
@@ -32,11 +31,6 @@ export class PlayerResolver {
 
    @Query(() => Player)
    async player(@Arg("id") id: string) {
-      return await this.repository.findOnePlayer(id);
-   }
-
-   @Query(() => FullPlayerStats)
-   async fullPlayer(@Arg("id") id: string) {
-      return await this.repository.getPlayerFullStats(id);
+      return await this.repository.getPlayer(id);
    }
 }
