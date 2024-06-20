@@ -5,7 +5,7 @@ import { positions } from "../../../utils/types/position.type";
 @ObjectType()
 export class Player {
    @Field((_type) => ID)
-   id?: string;
+   id?: number;
 
    @Field()
    name!: string;

@@ -146,11 +146,12 @@ export class MatchRepository {
                     }),
          });
       }
+      return matchPlayers;
    }
 
    public async getMatchPlayerStatus(
       date: Date,
-      playerId: string
+      playerId: number
    ): Promise<Partial<MatchPlayers>> {
       const player = await this.prisma.match_players.findFirst({
          include: {
@@ -287,7 +288,7 @@ export class MatchRepository {
       return await this.prisma.match.create({});
    }
 
-   public async addMatchPlayer(matchId: string, playerId: string) {
+   public async addMatchPlayer(matchId: number, playerId: number) {
       logger.info("Player added");
       return await this.prisma.match_players.create({
          data: {
@@ -307,8 +308,8 @@ export class MatchRepository {
    }
 
    public async addMatchStatus(
-      matchId: string,
-      playerId: string,
+      matchId: number,
+      playerId: number,
       stats: IStats
    ) {
       logger.info("Status Created");

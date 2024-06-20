@@ -137,7 +137,7 @@ export class PlayerRepository {
       return allPlayers;
    }
 
-   public async getPlayer(id: string): Promise<Player> {
+   public async getPlayer(id: number): Promise<Player> {
       const player = await this.prisma.player_stats.findUnique({
          include: {
             player: true,

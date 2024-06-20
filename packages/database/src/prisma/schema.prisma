@@ -17,7 +17,7 @@ enum Position {
 }
 
 model player {
-  id            String          @id @default(uuid())
+  id            Int          @id @default(autoincrement())
   name          String          @db.VarChar(365)
   team          String?         @db.VarChar(3)
   created_at    DateTime        @default(now()) @db.Timestamp(6)
@@ -28,8 +28,8 @@ model player {
 }
 
 model player_stats {
-  id                           String @id @default(uuid())
-  player_id                    String
+  id            Int          @id @default(autoincrement())
+  player_id                    Int
   goals                        Int
   assists                      Int
   participations               Int
@@ -43,16 +43,16 @@ model player_stats {
 }
 
 model match {
-  id            String          @id @default(uuid())
+  id            Int          @id @default(autoincrement())
   created_at    DateTime        @default(now()) @db.Timestamp(6)
   match_players match_players[]
   weekly_team   weekly_team[]
 }
 
 model match_players {
-  id                           String   @id @default(uuid())
-  match_id                     String
-  player_id                    String
+  id            Int          @id @default(autoincrement())
+  match_id                     Int
+  player_id                    Int
   goals                        Int
   assists                      Int
   participations               Int
@@ -75,9 +75,9 @@ enum Team {
 }
 
 model weekly_team {
-  id           String         @id @default(uuid())
-  match_id     String
-  player_id    String
+  id            Int          @id @default(autoincrement())
+  match_id     Int
+  player_id    Int
   team         Team
   player       player         @relation(fields: [player_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_player")
   match        match          @relation(fields: [match_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_match")
@@ -85,8 +85,8 @@ model weekly_team {
 }
 
 model team_results {
-  id            String      @id @default(uuid())
-  team_id       String
+  id            Int          @id @default(autoincrement())
+  team_id       Int
   goalsMade     Int
   goalsSuffered Int
   weekly_team   weekly_team @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_results")

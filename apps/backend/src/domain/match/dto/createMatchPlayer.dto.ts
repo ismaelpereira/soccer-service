@@ -4,8 +4,8 @@ import { MatchPlayers } from "../entity/matchStatus.entity";
 @ArgsType()
 export class AddMatchPlayerDTO implements Partial<MatchPlayers> {
    @Field()
-   matchId!: string;
+   matchId!: number;
 
    @Field()
-   playerId!: string;
+   playerId!: number;
 }

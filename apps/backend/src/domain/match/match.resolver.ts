@@ -20,7 +20,7 @@ export class MatchResolver {
    @Query(() => MatchPlayers)
    async playerMatchStatus(
       @Arg("date") date: Date,
-      @Arg("playerId") playerId: string
+      @Arg("playerId") playerId: number
    ) {
       return await this.repository.getMatchPlayerStatus(date, playerId);
    }

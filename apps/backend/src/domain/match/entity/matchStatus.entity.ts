@@ -4,13 +4,13 @@ import { Player } from "../../player/entity/fullPlayerData.entity";
 @ObjectType()
 export class MatchPlayers {
    @Field((_type) => ID)
-   id?: string;
+   id?: number;
 
    @Field()
-   matchId!: string;
+   matchId!: number;
 
    @Field()
-   playerId!: string;
+   playerId!: number;
 
    @Field()
    goals!: number;
@@ -59,6 +59,4 @@ export class MatchPlayers {
 
    @Field()
    effectivity!: number;
-
-  
 }

@@ -30,7 +30,7 @@ export class PlayerResolver {
    }
 
    @Query(() => Player)
-   async player(@Arg("id") id: string) {
+   async player(@Arg("id") id: number) {
       return await this.repository.getPlayer(id);
    }
 }
